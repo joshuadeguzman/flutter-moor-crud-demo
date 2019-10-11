@@ -10,12 +10,12 @@ part of 'moor_database.dart';
 class Goal extends DataClass implements Insertable<Goal> {
   final int id;
   final String name;
-  final double value;
+  final double amount;
   final DateTime dateAdded;
   Goal(
       {@required this.id,
       @required this.name,
-      @required this.value,
+      @required this.amount,
       this.dateAdded});
   factory Goal.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -27,8 +27,8 @@ class Goal extends DataClass implements Insertable<Goal> {
     return Goal(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      value:
-          doubleType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
+      amount:
+          doubleType.mapFromDatabaseResponse(data['${effectivePrefix}amount']),
       dateAdded: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}date_added']),
     );
@@ -38,7 +38,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return Goal(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      value: serializer.fromJson<double>(json['value']),
+      amount: serializer.fromJson<double>(json['amount']),
       dateAdded: serializer.fromJson<DateTime>(json['dateAdded']),
     );
   }
@@ -48,7 +48,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
-      'value': serializer.toJson<double>(value),
+      'amount': serializer.toJson<double>(amount),
       'dateAdded': serializer.toJson<DateTime>(dateAdded),
     };
   }
@@ -58,19 +58,19 @@ class Goal extends DataClass implements Insertable<Goal> {
     return GoalsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      value:
-          value == null && nullToAbsent ? const Value.absent() : Value(value),
+      amount:
+          amount == null && nullToAbsent ? const Value.absent() : Value(amount),
       dateAdded: dateAdded == null && nullToAbsent
           ? const Value.absent()
           : Value(dateAdded),
     ) as T;
   }
 
-  Goal copyWith({int id, String name, double value, DateTime dateAdded}) =>
+  Goal copyWith({int id, String name, double amount, DateTime dateAdded}) =>
       Goal(
         id: id ?? this.id,
         name: name ?? this.name,
-        value: value ?? this.value,
+        amount: amount ?? this.amount,
         dateAdded: dateAdded ?? this.dateAdded,
       );
   @override
@@ -78,7 +78,7 @@ class Goal extends DataClass implements Insertable<Goal> {
     return (StringBuffer('Goal(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('value: $value, ')
+          ..write('amount: $amount, ')
           ..write('dateAdded: $dateAdded')
           ..write(')'))
         .toString();
@@ -86,37 +86,37 @@ class Goal extends DataClass implements Insertable<Goal> {
 
   @override
   int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(name.hashCode, $mrjc(value.hashCode, dateAdded.hashCode))));
+      $mrjc(name.hashCode, $mrjc(amount.hashCode, dateAdded.hashCode))));
   @override
   bool operator ==(other) =>
       identical(this, other) ||
       (other is Goal &&
           other.id == id &&
           other.name == name &&
-          other.value == value &&
+          other.amount == amount &&
           other.dateAdded == dateAdded);
 }
 
 class GoalsCompanion extends UpdateCompanion<Goal> {
   final Value<int> id;
   final Value<String> name;
-  final Value<double> value;
+  final Value<double> amount;
   final Value<DateTime> dateAdded;
   const GoalsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.value = const Value.absent(),
+    this.amount = const Value.absent(),
     this.dateAdded = const Value.absent(),
   });
   GoalsCompanion copyWith(
       {Value<int> id,
       Value<String> name,
-      Value<double> value,
+      Value<double> amount,
       Value<DateTime> dateAdded}) {
     return GoalsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      value: value ?? this.value,
+      amount: amount ?? this.amount,
       dateAdded: dateAdded ?? this.dateAdded,
     );
   }
@@ -140,17 +140,23 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   @override
   GeneratedTextColumn get name => _name ??= _constructName();
   GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, false,
-        defaultValue: Constant(""));
+    return GeneratedTextColumn(
+      'name',
+      $tableName,
+      false,
+    );
   }
 
-  final VerificationMeta _valueMeta = const VerificationMeta('value');
-  GeneratedRealColumn _value;
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  GeneratedRealColumn _amount;
   @override
-  GeneratedRealColumn get value => _value ??= _constructValue();
-  GeneratedRealColumn _constructValue() {
-    return GeneratedRealColumn('value', $tableName, false,
-        defaultValue: Constant(0));
+  GeneratedRealColumn get amount => _amount ??= _constructAmount();
+  GeneratedRealColumn _constructAmount() {
+    return GeneratedRealColumn(
+      'amount',
+      $tableName,
+      false,
+    );
   }
 
   final VerificationMeta _dateAddedMeta = const VerificationMeta('dateAdded');
@@ -166,7 +172,7 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, name, value, dateAdded];
+  List<GeneratedColumn> get $columns => [id, name, amount, dateAdded];
   @override
   $GoalsTable get asDslTable => this;
   @override
@@ -188,11 +194,11 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     } else if (name.isRequired && isInserting) {
       context.missing(_nameMeta);
     }
-    if (d.value.present) {
+    if (d.amount.present) {
       context.handle(
-          _valueMeta, value.isAcceptableValue(d.value.value, _valueMeta));
-    } else if (value.isRequired && isInserting) {
-      context.missing(_valueMeta);
+          _amountMeta, amount.isAcceptableValue(d.amount.value, _amountMeta));
+    } else if (amount.isRequired && isInserting) {
+      context.missing(_amountMeta);
     }
     if (d.dateAdded.present) {
       context.handle(_dateAddedMeta,
@@ -220,8 +226,8 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
     if (d.name.present) {
       map['name'] = Variable<String, StringType>(d.name.value);
     }
-    if (d.value.present) {
-      map['value'] = Variable<double, RealType>(d.value.value);
+    if (d.amount.present) {
+      map['amount'] = Variable<double, RealType>(d.amount.value);
     }
     if (d.dateAdded.present) {
       map['date_added'] = Variable<DateTime, DateTimeType>(d.dateAdded.value);

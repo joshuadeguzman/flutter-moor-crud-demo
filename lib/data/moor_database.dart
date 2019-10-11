@@ -12,9 +12,9 @@ class Goals extends Table {
 
   IntColumn get id => integer().autoIncrement()();
 
-  TextColumn get name => text().withDefault(Constant(""))();
+  TextColumn get name => text()();
 
-  RealColumn get value => real().withDefault(Constant(0))();
+  RealColumn get amount => real()();
 
   DateTimeColumn get dateAdded => dateTime().nullable()();
 }
@@ -23,7 +23,7 @@ class Goals extends Table {
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super((FlutterQueryExecutor.inDatabaseFolder(
-          path: 'flutter_savely.sqlite',
+          path: 'db.sqlite',
           logStatements: true,
         )));
 

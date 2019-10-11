@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   moor_flutter: ^1.4.0
   provider: ^3.0.0+1
+  flutter_slidable: ^0.5.3
 
 dev_dependencies:
   flutter_test:
