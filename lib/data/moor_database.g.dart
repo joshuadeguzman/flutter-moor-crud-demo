@@ -7,25 +7,24 @@ part of 'moor_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps
-class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
+class Goal extends DataClass implements Insertable<Goal> {
   final int id;
   final String name;
   final double value;
   final DateTime dateAdded;
-  GoalsTableData(
+  Goal(
       {@required this.id,
       @required this.name,
       @required this.value,
       this.dateAdded});
-  factory GoalsTableData.fromData(
-      Map<String, dynamic> data, GeneratedDatabase db,
+  factory Goal.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final doubleType = db.typeSystem.forDartType<double>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    return GoalsTableData(
+    return Goal(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       value:
@@ -34,9 +33,9 @@ class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}date_added']),
     );
   }
-  factory GoalsTableData.fromJson(Map<String, dynamic> json,
+  factory Goal.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer = const ValueSerializer.defaults()}) {
-    return GoalsTableData(
+    return Goal(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       value: serializer.fromJson<double>(json['value']),
@@ -55,9 +54,8 @@ class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
   }
 
   @override
-  T createCompanion<T extends UpdateCompanion<GoalsTableData>>(
-      bool nullToAbsent) {
-    return GoalsTableCompanion(
+  T createCompanion<T extends UpdateCompanion<Goal>>(bool nullToAbsent) {
+    return GoalsCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       value:
@@ -68,9 +66,8 @@ class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
     ) as T;
   }
 
-  GoalsTableData copyWith(
-          {int id, String name, double value, DateTime dateAdded}) =>
-      GoalsTableData(
+  Goal copyWith({int id, String name, double value, DateTime dateAdded}) =>
+      Goal(
         id: id ?? this.id,
         name: name ?? this.name,
         value: value ?? this.value,
@@ -78,7 +75,7 @@ class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
       );
   @override
   String toString() {
-    return (StringBuffer('GoalsTableData(')
+    return (StringBuffer('Goal(')
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('value: $value, ')
@@ -93,30 +90,30 @@ class GoalsTableData extends DataClass implements Insertable<GoalsTableData> {
   @override
   bool operator ==(other) =>
       identical(this, other) ||
-      (other is GoalsTableData &&
+      (other is Goal &&
           other.id == id &&
           other.name == name &&
           other.value == value &&
           other.dateAdded == dateAdded);
 }
 
-class GoalsTableCompanion extends UpdateCompanion<GoalsTableData> {
+class GoalsCompanion extends UpdateCompanion<Goal> {
   final Value<int> id;
   final Value<String> name;
   final Value<double> value;
   final Value<DateTime> dateAdded;
-  const GoalsTableCompanion({
+  const GoalsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.value = const Value.absent(),
     this.dateAdded = const Value.absent(),
   });
-  GoalsTableCompanion copyWith(
+  GoalsCompanion copyWith(
       {Value<int> id,
       Value<String> name,
       Value<double> value,
       Value<DateTime> dateAdded}) {
-    return GoalsTableCompanion(
+    return GoalsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       value: value ?? this.value,
@@ -125,11 +122,10 @@ class GoalsTableCompanion extends UpdateCompanion<GoalsTableData> {
   }
 }
 
-class $GoalsTableTable extends GoalsTable
-    with TableInfo<$GoalsTableTable, GoalsTableData> {
+class $GoalsTable extends Goals with TableInfo<$GoalsTable, Goal> {
   final GeneratedDatabase _db;
   final String _alias;
-  $GoalsTableTable(this._db, [this._alias]);
+  $GoalsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   GeneratedIntColumn _id;
   @override
@@ -172,13 +168,13 @@ class $GoalsTableTable extends GoalsTable
   @override
   List<GeneratedColumn> get $columns => [id, name, value, dateAdded];
   @override
-  $GoalsTableTable get asDslTable => this;
+  $GoalsTable get asDslTable => this;
   @override
-  String get $tableName => _alias ?? 'goals_table';
+  String get $tableName => _alias ?? 'goals';
   @override
-  final String actualTableName = 'goals_table';
+  final String actualTableName = 'goals';
   @override
-  VerificationContext validateIntegrity(GoalsTableCompanion d,
+  VerificationContext validateIntegrity(GoalsCompanion d,
       {bool isInserting = false}) {
     final context = VerificationContext();
     if (d.id.present) {
@@ -210,13 +206,13 @@ class $GoalsTableTable extends GoalsTable
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  GoalsTableData map(Map<String, dynamic> data, {String tablePrefix}) {
+  Goal map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return GoalsTableData.fromData(data, _db, prefix: effectivePrefix);
+    return Goal.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  Map<String, Variable> entityToSql(GoalsTableCompanion d) {
+  Map<String, Variable> entityToSql(GoalsCompanion d) {
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
@@ -234,15 +230,15 @@ class $GoalsTableTable extends GoalsTable
   }
 
   @override
-  $GoalsTableTable createAlias(String alias) {
-    return $GoalsTableTable(_db, alias);
+  $GoalsTable createAlias(String alias) {
+    return $GoalsTable(_db, alias);
   }
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(const SqlTypeSystem.withDefaults(), e);
-  $GoalsTableTable _goalsTable;
-  $GoalsTableTable get goalsTable => _goalsTable ??= $GoalsTableTable(this);
+  $GoalsTable _goals;
+  $GoalsTable get goals => _goals ??= $GoalsTable(this);
   @override
-  List<TableInfo> get allTables => [goalsTable];
+  List<TableInfo> get allTables => [goals];
 }
