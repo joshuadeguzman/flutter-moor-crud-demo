@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_savely/goals/add_goal_screen.dart';
+import 'package:flutter_savely/goals/update_goal_screen.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
@@ -91,10 +92,24 @@ class GoalsScreenState extends State<GoalsScreen> {
       actionPane: SlidableDrawerActionPane(),
       secondaryActions: <Widget>[
         IconSlideAction(
-            caption: 'Delete',
-            color: Colors.red,
-            icon: Icons.delete,
-            onTap: () => _database.deleteTaks(goal)),
+          caption: 'Edit',
+          color: Colors.blue,
+          icon: Icons.edit,
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateGoalSceen(
+                goal: goal,
+              ),
+            ),
+          ),
+        ),
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: () => _database.deleteGoal(goal),
+        ),
       ],
       child: Container(
         padding: EdgeInsets.all(16),

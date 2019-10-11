@@ -6,23 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_savely/data/moor_database.dart';
 import 'package:provider/provider.dart';
 
-class AddGoalSceen extends StatefulWidget {
+// TODO: Ask in the study jam to combine Add + Update screens
+class UpdateGoalSceen extends StatefulWidget {
+  final Goal goal;
+
+  const UpdateGoalSceen({Key key, this.goal}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return AddGoalScreenState();
+    return UpdateGoalScreenState();
   }
 }
 
-class AddGoalScreenState extends State<AddGoalSceen> {
+class UpdateGoalScreenState extends State<UpdateGoalSceen> {
   AppDatabase _database;
   TextEditingController _goalNameTextEditingController;
   TextEditingController _goalTotalTextEditingController;
+  Goal get _goal => widget.goal;
 
-@override
+  @override
   void initState() {
     super.initState();
-    _goalNameTextEditingController = TextEditingController();
-    _goalTotalTextEditingController = TextEditingController();
+    _goalNameTextEditingController = TextEditingController(text: _goal.name);
+    _goalTotalTextEditingController =
+        TextEditingController(text: _goal.amount.toString());
   }
 
   @override
@@ -31,7 +38,7 @@ class AddGoalScreenState extends State<AddGoalSceen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add new goal'),
+        title: Text('Update existing goal'),
       ),
       body: Container(
         padding: EdgeInsets.all(16),
@@ -66,16 +73,29 @@ class AddGoalScreenState extends State<AddGoalSceen> {
                 if (_goalTotalTextEditingController.text.isNotEmpty &&
                     _goalNameTextEditingController.text.isNotEmpty) {
                   final Goal goal = Goal(
+                    id: _goal.id,
                     name: _goalNameTextEditingController.text,
                     amount: double.parse(_goalTotalTextEditingController.text),
                     dateAdded: DateTime.now(),
                   );
-                  _database.insertGoal(goal);
+                  _database.updateGoal(goal);
                   Navigator.pop(context);
                 }
               },
               child: Container(
-                child: Text('Save'),
+                child: Text('Update'),
+              ),
+            ),
+            RaisedButton(
+              onPressed: () {
+                if (_goalTotalTextEditingController.text.isNotEmpty &&
+                    _goalNameTextEditingController.text.isNotEmpty) {
+                  _database.deleteGoal(_goal);
+                  Navigator.pop(context);
+                }
+              },
+              child: Container(
+                child: Text('Delete'),
               ),
             )
           ],

@@ -38,5 +38,5 @@ class AppDatabase extends _$AppDatabase {
 
   Future updateGoal(Goal goal) => update(goals).replace(goal);
 
-  Future deleteTaks(Goal goal) => delete(goals).delete(goal);
+  Future deleteGoal(Goal goal) => delete(goals).delete(goal);
 }
