@@ -86,23 +86,26 @@ class GoalsScreenState extends State<GoalsScreen> {
     );
   }
 
-  Widget _buildGoalItemView(
-    Goal goal,
-  ) {
+  Widget _buildGoalItemView(Goal goal) {
     return Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        secondaryActions: <Widget>[
-          IconSlideAction(
-              caption: 'Delete',
-              color: Colors.red,
-              icon: Icons.delete,
-              onTap: () => _database.deleteTaks(goal)),
-        ],
+      actionPane: SlidableDrawerActionPane(),
+      secondaryActions: <Widget>[
+        IconSlideAction(
+            caption: 'Delete',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () => _database.deleteTaks(goal)),
+      ],
+      child: Container(
+        padding: EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(goal.name),
             Text("Total Goal ${goal.amount.toString()}"),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
