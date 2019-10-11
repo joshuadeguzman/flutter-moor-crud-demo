@@ -19,7 +19,7 @@ class GoalsScreenState extends State<GoalsScreen> {
         title: Text('Goals'),
       ),
       body: Center(
-        child: Text('Helo world'),
+        child: Text('Hello world'),
       ),
     );
   }
