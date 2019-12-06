@@ -18,7 +18,7 @@ class AddGoalScreenState extends State<AddGoalSceen> {
   TextEditingController _goalNameTextEditingController;
   TextEditingController _goalTotalTextEditingController;
 
-@override
+  @override
   void initState() {
     super.initState();
     _goalNameTextEditingController = TextEditingController();
@@ -47,6 +47,7 @@ class AddGoalScreenState extends State<AddGoalSceen> {
                     Radius.circular(10),
                   ),
                 ),
+                hintText: "Goal title",
               ),
             ),
             Padding(padding: EdgeInsets.only(top: 16)),
@@ -58,6 +59,7 @@ class AddGoalScreenState extends State<AddGoalSceen> {
                     Radius.circular(10),
                   ),
                 ),
+                hintText: "Goal amount",
               ),
               keyboardType: TextInputType.number,
             ),
